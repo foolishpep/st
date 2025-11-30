@@ -1,11 +1,9 @@
 diff a/x.c b/x.c	(rejected hunks)
-@@ -1131,6 +1229,9 @@ xinit(int cols, int rows)
- 	usedfont = (opt_font == NULL)? font : opt_font;
- 	xloadfonts(usedfont, 0);
-
-+	/* spare fonts */
-+	xloadsparefonts();
-+
- 	/* colors */
- 	xw.cmap = XDefaultColormap(xw.dpy, xw.scr);
- 	xloadcols();
+@@ -14,6 +14,7 @@
+ #include <X11/keysym.h>
+ #include <X11/Xft/Xft.h>
+ #include <X11/XKBlib.h>
++#include <X11/extensions/Xrandr.h>
+ 
+ char *argv0;
+ #include "arg.h"

@@ -1,14 +1,21 @@
 diff a/config.def.h b/config.def.h	(rejected hunks)
-@@ -6,6 +6,12 @@
-  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
-  */
- static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
-+/* Spare fonts */
-+static char *font2[] = {
-+/*	"Inconsolata for Powerline:pixelsize=12:antialias=true:autohint=true", */
-+/*	"Hack Nerd Font Mono:pixelsize=11:antialias=true:autohint=true", */
-+};
-+
+@@ -9,5 +9,19 @@
  static int borderpx = 2;
-
+ 
++/*
++ * Override/adjust fontsize of choosen monitors:
++ */
++MonitorConfig monitors_config[] = {
++	// skip = fixed relative points size (monitor dpi)
++	//   =0 : fixed absolute pixel size (default screen dpi)
++	//   >0 : auto absolute pixel size (monitor dpi)
++	//   <0 : auto relative points size (monitor dpi)
++	// {"DP-1", 0}, // BUG:(size=0): not restored to default after back'n'forth
++	{"HDMI-0~1", -20},  // BUG:(ignored DPI=220): = 20 is eqv to 10pt (DPI=110)
++	{"HDMI-0~2", -14},
++};
++float winmovethreshold = 0.6;
++
  /*
+  * What program is execed by st depends of these precedence rules:
+  * 1: program passed with -e
