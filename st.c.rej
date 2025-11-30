@@ -1,0 +1,30 @@
+diff a/st.c b/st.c	(rejected hunks)
+@@ -113,6 +113,7 @@ typedef struct {
+ typedef struct {
+ 	int row;      /* nb row */
+ 	int col;      /* nb col */
++	int maxcol;   /* Maximum number of columns */
+ 	Line *line;   /* screen */
+ 	Line *alt;    /* alternate screen */
+ 	int *dirty;   /* dirtyness of lines */
+@@ -2546,11 +2547,18 @@ void
+ tresize(int col, int row)
+ {
+ 	int i;
+-	int minrow = MIN(row, term.row);
+-	int mincol = MIN(col, term.col);
++	int tmp;
++	int minrow, mincol;
+ 	int *bp;
+ 	TCursor c;
+ 
++	tmp = col;
++	if (!term.maxcol)
++		term.maxcol = term.col;
++	col = MAX(col, term.maxcol);
++	minrow = MIN(row, term.row);
++	mincol = MIN(col, term.maxcol);
++
+ 	if (col < 1 || row < 1) {
+ 		fprintf(stderr,
+ 		        "tresize: error resizing to %dx%d\n", col, row);
