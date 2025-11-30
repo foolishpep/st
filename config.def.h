@@ -8,11 +8,11 @@
 static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
 /* Spare fonts */
 static char *font2[] = {
-/*	"Inconsolata for Powerline:pixelsize=12:antialias=true:autohint=true", */
-/*	"Hack Nerd Font Mono:pixelsize=11:antialias=true:autohint=true", */
+  // "Symbols Nerd Font Mono:pixelsize=16:antialias=true:autohint=true",
+  // "Inconsolata for Powerline:pixelsize=12:antialias=true:autohint=true",
 };
 
-static int borderpx = 2;
+static int borderpx = 10;
 
 /*
  * Override/adjust fontsize of choosen monitors:
@@ -22,9 +22,11 @@ MonitorConfig monitors_config[] = {
 	//   =0 : fixed absolute pixel size (default screen dpi)
 	//   >0 : auto absolute pixel size (monitor dpi)
 	//   <0 : auto relative points size (monitor dpi)
-	// {"DP-1", 0}, // BUG:(size=0): not restored to default after back'n'forth
-	{"HDMI-0~1", -20},  // BUG:(ignored DPI=220): = 20 is eqv to 10pt (DPI=110)
-	{"HDMI-0~2", -14},
+	
+	{"eDP-1", 16}, // Laptop screen
+	{"HDMI-1", -18}, // External screen scale to dpi
+	// {"HDMI-0~1", -20},  // BUG:(ignored DPI=220): = 20 is eqv to 10pt (DPI=110)
+	// {"HDMI-0~2", -14},
 };
 float winmovethreshold = 0.6;
 
@@ -102,7 +104,7 @@ static unsigned int cursorthickness = 2;
  * 0: disable (render all U25XX glyphs normally from the font).
  */
 const int boxdraw = 1;
-const int boxdraw_bold = 1;
+const int boxdraw_bold = 0;
 
 /* braille (U28XX):  1: render as adjacent "pixels",  0: use font */
 const int boxdraw_braille = 0;
@@ -139,32 +141,35 @@ float alpha = 0.8;
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
 	/* 8 normal colors */
-	"black",
-	"red3",
-	"green3",
-	"yellow3",
-	"blue2",
-	"magenta3",
-	"cyan3",
-	"gray90",
+	"#434343",
+	"#9f5e64",
+	"#858f6c",
+	"#b48f6d",
+	"#637086",
+	"#786879",
+	"#8291a2",
+	"#a3a3a3",
 
 	/* 8 bright colors */
-	"gray50",
-	"red",
-	"green",
-	"yellow",
-	"#5c5cff",
-	"magenta",
-	"cyan",
-	"white",
+	"#434343",
+	"#9f5e64",
+	"#858f6c",
+	"#b48f6d",
+	"#637086",
+	"#786879",
+	"#8291a2",
+	"#a3a3a3",
+
 
 	[255] = 0,
 
 	/* more colors can be added after 255 to use with DefaultXX */
 	"#cccccc",
 	"#555555",
-	"gray90", /* default foreground colour */
-	"black", /* default background colour */
+	"#a3a3a3", /* default foreground colour */
+	"#181818", /* default background colour */
+	// "gray90", /* default foreground colour */
+	// "black", /* default background colour */
 };
 
 
@@ -247,13 +252,13 @@ static MouseShortcut mshortcuts[] = {
 	/* mask                 button   function        argument       release */
 	{ TERMMOD,              Button3, previewimage,   {.s = "feh"} },
 	{ TERMMOD,              Button2, showimageinfo,  {},            1 },
-	{ ShiftMask,            Button4, kscrollup,      {.i = 1} },
-	{ ShiftMask,            Button5, kscrolldown,    {.i = 1} },
+	{ XK_ANY_MOD,           Button4, kscrollup,      {.i = 1} },
+	{ XK_ANY_MOD,           Button5, kscrolldown,    {.i = 1} },
 	{ XK_ANY_MOD,           Button2, selpaste,       {.i = 0},      1 },
 	{ ShiftMask,            Button4, ttysend,        {.s = "\033[5;2~"} },
-	{ XK_ANY_MOD,           Button4, ttysend,        {.s = "\031"} },
 	{ ShiftMask,            Button5, ttysend,        {.s = "\033[6;2~"} },
-	{ XK_ANY_MOD,           Button5, ttysend,        {.s = "\005"} },
+	// { XK_ANY_MOD,           Button4, ttysend,        {.s = "\031"} },
+	// { XK_ANY_MOD,           Button5, ttysend,        {.s = "\005"} },
 };
 
 static Shortcut shortcuts[] = {
@@ -262,21 +267,23 @@ static Shortcut shortcuts[] = {
 	{ ControlMask,          XK_Print,       toggleprinter,  {.i =  0} },
 	{ ShiftMask,            XK_Print,       printscreen,    {.i =  0} },
 	{ XK_ANY_MOD,           XK_Print,       printsel,       {.i =  0} },
-	{ TERMMOD,              XK_Prior,       zoom,           {.f = +1} },
-	{ TERMMOD,              XK_Next,        zoom,           {.f = -1} },
-	{ TERMMOD,              XK_Home,        zoomreset,      {.f =  0} },
+	{ TERMMOD,              XK_K,           zoom,           {.f = +1} },
+	{ TERMMOD,              XK_J,           zoom,           {.f = -1} },
+	{ TERMMOD,              XK_space,       zoomreset,      {.f =  0} },
 	{ TERMMOD,              XK_End,         refreshxrandr,  {.i =  0} },
 	{ TERMMOD,              XK_C,           clipcopy,       {.i =  0} },
 	{ TERMMOD,              XK_V,           clippaste,      {.i =  0} },
 	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
 	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
+	{ ControlMask,          XK_k,           kscrollup,      {.i = 3} },
+	{ ControlMask,          XK_j,           kscrolldown,    {.i = 3} },
 	{ TERMMOD,              XK_F1,          togglegrdebug,  {.i =  0} },
 	{ TERMMOD,              XK_F6,          dumpgrstate,    {.i =  0} },
 	{ TERMMOD,              XK_F7,          unloadimages,   {.i =  0} },
 	{ TERMMOD,              XK_F8,          toggleimages,   {.i =  0} },
-	{ ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} },
-	{ ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} },
+	// { ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} },
+	// { ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} },
 };
 
 /*
