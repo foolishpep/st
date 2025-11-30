@@ -1,0 +1,5 @@
+*.rej
+*.o
+*.orig
+st
+config.h
