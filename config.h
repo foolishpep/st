@@ -24,7 +24,7 @@ MonitorConfig monitors_config[] = {
 	//   <0 : auto relative points size (monitor dpi)
 	
 	{"eDP-1", 16}, // Laptop screen
-	{"HDMI-1", -18}, // External screen scale to dpi
+	{"HDMI-1", -35}, // External screen scale to dpi
 	// {"HDMI-0~1", -20},  // BUG:(ignored DPI=220): = 20 is eqv to 10pt (DPI=110)
 	// {"HDMI-0~2", -14},
 };

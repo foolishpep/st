@@ -2253,8 +2253,9 @@ cachemonitorinfo()
 	int prev_num = monitors_num;
 	MonitorInfo *prev_info = monitors_info;
 	XRRMonitorInfo *xmonitors = XRRGetMonitors(xw.dpy, XRootWindow(xw.dpy, xw.scr), 1, &monitors_num);
-	if (!monitors_num)
-		die("xrandr found no monitors");
+	// Causes st to die when using xrandr to change display and both happen to be disabled
+	// if (!monitors_num)
+	// 	die("xrandr found no monitors");
 
 	monitors_info = xmalloc(monitors_num * sizeof(MonitorInfo));
 
